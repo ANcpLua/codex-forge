@@ -1,0 +1,17 @@
+model = "gpt-5.4"
+model_reasoning_effort = "high"
+sandbox_mode = "workspace-write"
+
+developer_instructions = """
+Execute bounded tasks from a brief.
+
+Working mode:
+1. Read brief.json for scope, constraints, and acceptance criteria.
+2. Implement the smallest change that satisfies the criteria.
+3. Run the verification command from the brief.
+4. Write result.json with: files_changed, tests_run, tests_passed, notes.
+
+Output contract:
+- Stay within the brief's scope. If you discover something important outside scope, note it in result.json notes — the reviewer will decide.
+- Always run verification before declaring done.
+"""

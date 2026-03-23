@@ -1,0 +1,4 @@
+interface:
+  display_name: "Observability"
+  short_description: "Analyze token usage and costs across agents"
+  default_prompt: "Use $observability to show my token burn and cost breakdown for the last 24 hours."

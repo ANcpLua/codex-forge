@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-model-forge/schemas/task-contract.v1.json",
+  "title": "TaskContract",
+  "description": "Typed work contract emitted by the task router. Every agent consumes this, regardless of vendor.",
+  "type": "object",
+  "required": ["task_id", "goal", "output_schema", "budget", "side_effect_policy"],
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "parent_task_id": {
+      "type": ["string", "null"],
+      "format": "uuid"
+    },
+    "goal": {
+      "type": "string",
+      "description": "Single-sentence objective. If it takes two sentences, split the task."
+    },
+    "inputs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "URIs to artifacts, resources, or prompts needed for this task."
+    },
+    "tool_allowlist": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "MCP tool names this agent is allowed to call."
+    },
+    "budget": {
+      "type": "object",
+      "required": ["max_tokens", "max_retries"],
+      "properties": {
+        "max_tokens": { "type": "integer" },
+        "max_tool_calls": { "type": "integer" },
+        "max_retries": { "type": "integer" },
+        "deadline_ms": { "type": "integer" }
+      }
+    },
+    "output_schema": {
+      "type": "string",
+      "description": "Reference to the expected output schema (e.g., artifact-envelope.v1)."
+    },
+    "verification": {
+      "type": "object",
+      "properties": {
+        "schema_required": { "type": "boolean" },
+        "tests_required": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "claim_evidence_required": { "type": "boolean" },
+        "independent_refuter": { "type": "boolean" }
+      }
+    },
+    "side_effect_policy": {
+      "type": "string",
+      "enum": ["read_only", "shadow_write", "commit_write"]
+    }
+  }
+}

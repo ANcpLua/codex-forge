@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-model-forge/schemas/usage-event.v1.json",
+  "title": "UsageEvent",
+  "description": "Normalized usage record. One per model call. ccusage is an edge collector — not global truth.",
+  "type": "object",
+  "required": ["agent_id", "source", "input_tokens", "output_tokens", "timestamp"],
+  "properties": {
+    "trace_id": {
+      "type": "string",
+      "description": "OTel trace ID if available, otherwise generated UUID."
+    },
+    "agent_id": {
+      "type": "string",
+      "description": "Role identifier (e.g., codex-implementer, claude-researcher)."
+    },
+    "session_id": {
+      "type": "string",
+      "description": "Native session ID from the runtime."
+    },
+    "source": {
+      "type": "string",
+      "enum": ["claude", "codex", "ccusage", "manual"],
+      "description": "Where this event was captured."
+    },
+    "model": {
+      "type": "string",
+      "description": "Native model name as reported by the runtime."
+    },
+    "input_tokens": { "type": "integer" },
+    "output_tokens": { "type": "integer" },
+    "cache_write_tokens": { "type": "integer" },
+    "cache_read_tokens": { "type": "integer" },
+    "total_tokens": { "type": "integer" },
+    "estimated_cost_usd": { "type": "number" },
+    "host": {
+      "type": "string",
+      "description": "Machine hostname. Usage is per-host, not global."
+    },
+    "project": { "type": "string" },
+    "task_id": {
+      "type": ["string", "null"],
+      "description": "Links to TaskContract if available."
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

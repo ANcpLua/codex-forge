@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-model-forge/schemas/artifact-envelope.v1.json",
+  "title": "ArtifactEnvelope",
+  "description": "Every agent output is wrapped in this. Artifacts have lineage — never hand raw chat to the next agent.",
+  "type": "object",
+  "required": ["artifact_id", "task_id", "type", "content_uri", "sha256", "produced_by"],
+  "properties": {
+    "artifact_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "task_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Links back to the TaskContract that produced this."
+    },
+    "type": {
+      "type": "string",
+      "enum": ["plan", "brief", "patch", "result", "review", "report", "query", "config"]
+    },
+    "content_uri": {
+      "type": "string",
+      "description": "file:// or s3:// URI to the actual content."
+    },
+    "sha256": {
+      "type": "string",
+      "description": "Content hash for integrity and deduplication."
+    },
+    "claims": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "What this artifact asserts. Each claim should have a matching evidence_ref."
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "References to evidence supporting the claims."
+    },
+    "produced_by": {
+      "type": "object",
+      "required": ["agent_id"],
+      "properties": {
+        "agent_id": { "type": "string" },
+        "model": { "type": "string", "description": "Vendor-native model name." },
+        "trace_id": { "type": "string", "description": "OTel trace ID." },
+        "span_id": { "type": "string", "description": "OTel span ID." }
+      }
+    }
+  }
+}
